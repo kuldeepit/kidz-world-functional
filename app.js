@@ -90,10 +90,10 @@ var items = [
   },
 ];
 
-function updateCart() {
+function cartmodify() {
   let cart = 0;
-  for (index = 0; index < items.length; index++) {
-    cart = cart + items[index].quantity;
+  for (ind = 0; ind < items.length; ind++) {
+    cart = cart + items[ind].quantity;
   }
   cartValue.innerHTML = cart;
 }
@@ -101,42 +101,67 @@ function updateCart() {
 for (let i = 0; i < addButtons.length; i++) {
   addButtons[i].onclick = (e) => {
     items[i].quantity++;
-    updateCart();
+    cartmodify();
   };
 }
 
-var finalDollars = 0;
-var finalCents = 0;
+var dollarmodify = 0;
+var centsmodify = 0;
 
-function updatePrice() {
+function pricemodify() {
   let totalPriceInCents = 0;
 
-  for (index = 0; index < items.length; index++) {
+  for (ind = 0; ind < items.length; ind++) {
     totalPriceInCents =
       totalPriceInCents +
-      items[index].quantity * (items[index].dollars * 100 + items[index].cents);
+      items[ind].quantity * (items[ind].dollars * 100 + items[ind].cents);
   }
-  finalDollars = Math.floor(totalPriceInCents / 100);
-  finalCents = totalPriceInCents % 100;
+  dollarmodify = Math.floor(totalPriceInCents / 100);
+  centsmodify = totalPriceInCents % 100;
 }
 
+var whatsappLink =
+  "https://api.whatsapp.com/send?phone=919899863664&text=WHAT%20ORDERED";
+
+
+function whatsappmodify() {
+
+  for (let ind = 0; ind < items.length; ind++) {
+
+    if (items[ind].quantity != 0) {
+
+      whatsappLink += "%0A" + items[ind].name + "%20" + items[ind].quantity;
+
+    }
+  }
+  whatsappLink +=
+
+    "%0A" + "Total%20Price:%20$" + dollarmodify + "%20" + centsmodify + "c";
+
+
+
+}
 
 cartButton.onclick = () => {
-  updatePrice();
 
+  pricemodify();
+ 
+  whatsappmodify();
 
-  for (let index = 0; index < items.length; index++) {
-    if (items[index].quantity != 0) {
+  window.open(whatsappLink, "");
+
+  for (let ind = 0; ind < items.length; ind++) {
+    if (items[ind].quantity != 0) {
       console.log(
         "Item name: " +
-          items[index].name +
+          items[ind].name +
           " - Quantity: " +
-          items[index].quantity
+          items[ind].quantity
       );
     }
   }
 
   console.log(
-    "The total amount is " + finalDollars + "$ and " + finalCents + " cents"
+    "The total amount is " + dollarmodify + "$ and " + centsmodify + " cents"
   );
 };
